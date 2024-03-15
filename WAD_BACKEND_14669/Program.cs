@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using WAD_BACKEND_14669.Repositories;
 using WAD_BACKEND_14669.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +14,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<MovieDbContext>(
     e => e.UseSqlServer(builder.Configuration.GetConnectionString("MovieConnectionString"))
     );
+builder.Services.AddScoped<IMoviesRepository, MoviesRepository>();
+builder.Services.AddScoped<ICategoriesRepository, CategoriesRepository>();
 
 var app = builder.Build();
 
