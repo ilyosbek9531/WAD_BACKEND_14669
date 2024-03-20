@@ -14,6 +14,14 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<MovieDbContext>(
     e => e.UseSqlServer(builder.Configuration.GetConnectionString("MovieConnectionString"))
     );
+var allowedOrigins = "";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: allowedOrigins, policy =>
+    {
+        policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+    });
+});
 builder.Services.AddScoped<IMoviesRepository, MoviesRepository>();
 builder.Services.AddScoped<ICategoriesRepository, CategoriesRepository>();
 
@@ -31,5 +39,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseCors(allowedOrigins);
 
 app.Run();
